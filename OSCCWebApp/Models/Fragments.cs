@@ -10,7 +10,7 @@ namespace OSCCWebApp
         public string FragmentName { get; set; }
         public string LineName { get; set; }
         public int Editor { get; set; }
-        public string FragmentContent { get; set; }
+        public string LineContent { get; set; }
         public int? Published { get; set; }
         public string Status { get; set; }
 

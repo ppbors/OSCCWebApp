@@ -7,8 +7,8 @@ namespace OSCCWebApp
     {
         public int Id { get; set; }
         public int Book { get; set; }
-        public string EditorName { get; set; }
-        public int? DefaultEditor { get; set; }
+        public string Name { get; set; }
+        public int? MainEditor { get; set; }
 
         public virtual Books BookNavigation { get; set; }
     }

@@ -17,7 +17,7 @@ namespace OSCCWebApp
         public int FragmentNo { get; set; }
         public int? Published { get; set; }
 
-        public virtual FAppCrit FAppCrit { get; set; }
+        public virtual FApparatus FApparatus { get; set; }
         public virtual FCommentary FCommentary { get; set; }
         public virtual FDifferences FDifferences { get; set; }
         public virtual FTranslations FTranslations { get; set; }

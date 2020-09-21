@@ -8,11 +8,11 @@ namespace OSCCWebApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FAppCritController : Controller
+    public class FApparatusController : Controller
     {
         private readonly OSCC_DEVContext _context;
 
-        public FAppCritController(OSCC_DEVContext context)
+        public FApparatusController(OSCC_DEVContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace OSCCWebApp.Controllers
         [HttpGet]
         public IActionResult GetByFragmentID([FromQuery] int fragmentID)
         {
-            return Json(_context.FAppCrit.ToList().Where(i => i.Fragment == fragmentID));
+            return Json(_context.FApparatus.ToList().Where(i => i.Fragment == fragmentID));
         }
     }
 }

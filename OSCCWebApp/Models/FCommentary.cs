@@ -7,7 +7,7 @@ namespace OSCCWebApp
     {
         public int Id { get; set; }
         public int? Fragment { get; set; }
-        public string Commentaar { get; set; }
+        public string Commentary { get; set; }
 
         public virtual FragmentReferencer FragmentNavigation { get; set; }
     }

@@ -23,6 +23,13 @@ namespace OSCCWebApp.Controllers
             return Json(_context.Fragments.ToList().Where(i => i.Book == bookID));
         }
 
+        [HttpGet]
+        [Route("Hello")]
+        public IActionResult GetReferencerID2([FromQuery] string fragmentID, [FromQuery] int editorID, [FromQuery] int bookID)
+        {
+            return Json(_context.Fragments.ToList().Where(i => i.FragmentName == fragmentID).Where(i => i.Editor == editorID).Where(i => i.Book == bookID).Select(x => x.Id));
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody] Fragments fragment)
         {

@@ -48,7 +48,7 @@ namespace OSCCWebApp.Controllers
         [Route("Delete")]
         public IActionResult DeleteByName([FromBody] Editors editor)
         {
-            Editors _editor = _context.Editors.ToList().Where(i => i.EditorName == editor.EditorName).FirstOrDefault();
+            Editors _editor = _context.Editors.ToList().Where(i => i.Name == editor.Name).FirstOrDefault();
             try
             {
                 if (ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace OSCCWebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _editor.DefaultEditor = editor.DefaultEditor;
+                    _editor.MainEditor = editor.MainEditor;
                     _context.SaveChanges();
                     return Ok(_editor);
                 }

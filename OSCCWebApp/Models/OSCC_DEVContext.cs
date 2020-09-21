@@ -18,10 +18,10 @@ namespace OSCCWebApp
         public virtual DbSet<Authors> Authors { get; set; }
         public virtual DbSet<Bibliography> Bibliography { get; set; }
         public virtual DbSet<Books> Books { get; set; }
-        public virtual DbSet<Comments> Comments { get; set; }
-        public virtual DbSet<Comments2> Comments2 { get; set; }
+        public virtual DbSet<Comments> Comments { get; set; } // renamed to T_Commentary
+        public virtual DbSet<Comments2> Comments2 { get; set; } // deleted
         public virtual DbSet<Editors> Editors { get; set; }
-        public virtual DbSet<FAppCrit> FAppCrit { get; set; }
+        public virtual DbSet<FApparatus> FApparatus { get; set; }
         public virtual DbSet<FCommentary> FCommentary { get; set; }
         public virtual DbSet<FContext> FContext { get; set; }
         public virtual DbSet<FDifferences> FDifferences { get; set; }
@@ -192,7 +192,7 @@ namespace OSCCWebApp
 
             modelBuilder.Entity<Editors>(entity =>
             {
-                entity.HasIndex(e => new { e.Book, e.EditorName })
+                entity.HasIndex(e => new { e.Book, e.Name })
                     .HasName("Editors_UN")
                     .IsUnique();
 
@@ -202,13 +202,13 @@ namespace OSCCWebApp
 
                 entity.Property(e => e.Book).HasColumnType("int(11)");
 
-                entity.Property(e => e.DefaultEditor)
-                    .HasColumnName("defaultEditor")
+                entity.Property(e => e.MainEditor)
+                    .HasColumnName("MainEditor")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.EditorName)
+                entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("editorName")
+                    .HasColumnName("Name")
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
@@ -218,12 +218,12 @@ namespace OSCCWebApp
                     .HasConstraintName("Editors_Books_FK");
             });
 
-            modelBuilder.Entity<FAppCrit>(entity =>
+            modelBuilder.Entity<FApparatus>(entity =>
             {
-                entity.ToTable("F_AppCrit");
+                entity.ToTable("F_Apparatus");
 
                 entity.HasIndex(e => e.Fragment)
-                    .HasName("F_AppCrit_UN")
+                    .HasName("F_Apparatus_UN")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -233,10 +233,10 @@ namespace OSCCWebApp
                 entity.Property(e => e.Fragment).HasColumnType("int(11)");
 
                 entity.HasOne(d => d.FragmentNavigation)
-                    .WithOne(p => p.FAppCrit)
-                    .HasForeignKey<FAppCrit>(d => d.Fragment)
+                    .WithOne(p => p.FApparatus)
+                    .HasForeignKey<FApparatus>(d => d.Fragment)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("F_AppCrit_FragmentReferencer_FK");
+                    .HasConstraintName("F_Apparatus_FragmentReferencer_FK");
             });
 
             modelBuilder.Entity<FCommentary>(entity =>
@@ -363,7 +363,7 @@ namespace OSCCWebApp
                 entity.Property(e => e.FragmentNo).HasColumnType("int(11)");
 
                 entity.Property(e => e.Published)
-                    .HasColumnName("published")
+                    .HasColumnName("Published")
                     .HasColumnType("int(11)");
             });
 
@@ -381,28 +381,28 @@ namespace OSCCWebApp
 
                 entity.Property(e => e.Editor).HasColumnType("int(11)");
 
-                entity.Property(e => e.FragmentContent)
+                entity.Property(e => e.LineContent)
                     .IsRequired()
-                    .HasColumnName("fragmentContent");
+                    .HasColumnName("LineContent");
 
                 entity.Property(e => e.FragmentName)
                     .IsRequired()
-                    .HasColumnName("fragmentName")
+                    .HasColumnName("FragmentName")
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
                 entity.Property(e => e.LineName)
                     .IsRequired()
-                    .HasColumnName("lineName")
+                    .HasColumnName("LineName")
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Published)
-                    .HasColumnName("published")
+                    .HasColumnName("Published")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.Status)
-                    .HasColumnName("status")
+                    .HasColumnName("Status")
                     .HasColumnType("tinytext");
 
                 entity.HasOne(d => d.BookNavigation)
