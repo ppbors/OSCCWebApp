@@ -39,6 +39,7 @@ namespace OSCCWebApp.Controllers
                 if (ModelState.IsValid)
                 {
                     _context.Authors.Add(author);
+                    
                     _context.SaveChanges();
                     return Ok(author);
                 }
