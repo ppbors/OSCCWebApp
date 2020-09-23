@@ -46,9 +46,9 @@ namespace OSCCWebApp.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public IActionResult DeleteByName([FromBody] Editors editor)
+        public IActionResult DeleteByName([FromBody] Editors editor) //FIXME: DeleteById new name
         {
-            Editors _editor = _context.Editors.ToList().Where(i => i.Name == editor.Name).FirstOrDefault();
+            Editors _editor = _context.Editors.ToList().Where(i => i.Id == editor.Id).FirstOrDefault();
             try
             {
                 if (ModelState.IsValid)

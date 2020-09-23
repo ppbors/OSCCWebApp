@@ -49,7 +49,7 @@ namespace OSCCWebApp.Controllers
         [Route("Delete")]
         public IActionResult DeleteByTitle([FromBody] Books book)
         {
-            Books _book = _context.Books.ToList().Where(i => i.Title == book.Title).FirstOrDefault();
+            Books _book = _context.Books.ToList().Where(i => i.Id == book.Id).FirstOrDefault();
             try
             {
                 if (ModelState.IsValid)

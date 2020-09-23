@@ -57,7 +57,7 @@ namespace OSCCWebApp.Controllers
         [Route("Delete")]
         public IActionResult DeleteByName([FromBody] Authors author)
         {
-            Authors _author = _context.Authors.ToList().Where(i => i.Name == author.Name).FirstOrDefault();
+            Authors _author = _context.Authors.ToList().Where(i => i.Id == author.Id).FirstOrDefault();
             try
             {
                 if (ModelState.IsValid)
