@@ -24,13 +24,13 @@ namespace OSCCWebApp.Controllers
         }
 
         [HttpGet]
-        [Route("Hello")] //FIXME:
+        [Route("Hello")] //FIXME: change name
         public IActionResult GetReferencerID2([FromQuery] string fragmentID, [FromQuery] int editorID, [FromQuery] int bookID)
         {
             return Json(_context.Fragments.ToList().Where(i => i.FragmentName == fragmentID).Where(i => i.Editor == editorID).Where(i => i.Book == bookID).Select(x => x.Id));
         }
 
-        [HttpPost] // This must be an update statement: if it is there, update it accordingly.
+        [HttpPost] //FIXME: This must be an update statement: if it is there, update it accordingly.
         public IActionResult Create([FromBody] Fragments fragment)
         {
             try

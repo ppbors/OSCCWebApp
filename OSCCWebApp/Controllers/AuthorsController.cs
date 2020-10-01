@@ -71,8 +71,10 @@ namespace OSCCWebApp.Controllers
             } catch (Exception ex)
             {
                 // log
+                // return StatusCode(418);;
+
             }
-            return NotFound(author);
+            return NotFound();
         }
 
         private bool AuthorsExists(int id)
