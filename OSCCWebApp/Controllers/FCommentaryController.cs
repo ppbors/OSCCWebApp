@@ -22,5 +22,32 @@ namespace OSCCWebApp.Controllers
         {
             return Json(_context.FCommentary.ToList().Where(i => i.Fragment == fragmentID));
         }
+
+        [HttpPost]
+        [Route("Create")]
+        public IActionResult Create([FromBody] FCommentary commentary)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.FCommentary.Add(commentary);
+                    _context.SaveChanges();
+                    return Ok(commentary);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // log
+            }
+
+            return Conflict(commentary);
+        }
+
+
     }
+
+
+
 }

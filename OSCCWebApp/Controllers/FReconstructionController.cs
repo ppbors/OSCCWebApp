@@ -22,5 +22,28 @@ namespace OSCCWebApp.Controllers
         {
             return Json(_context.FReconstruction.ToList().Where(i => i.Fragment == fragmentID));
         }
+
+        [HttpPost]
+        [Route("Create")]
+        public IActionResult Create([FromBody] FReconstruction reconstruction)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.FReconstruction.Add(reconstruction);
+                    _context.SaveChanges();
+                    return Ok(reconstruction);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // log
+            }
+
+            return Conflict(reconstruction);
+        }
+
     }
 }

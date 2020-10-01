@@ -21,5 +21,28 @@ namespace OSCCWebApp.Controllers
         {
             return Json(_context.FTranslations.ToList().Where(i => i.Fragment == fragmentID));
         }
+
+        [HttpPost]
+        [Route("Create")]
+        public IActionResult Create([FromBody] FTranslations translation)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.FTranslations.Add(translation);
+                    _context.SaveChanges();
+                    return Ok(translation);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // log
+            }
+
+            return Conflict(translation);
+        }
+
     }
 }

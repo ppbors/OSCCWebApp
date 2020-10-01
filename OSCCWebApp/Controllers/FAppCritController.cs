@@ -22,5 +22,28 @@ namespace OSCCWebApp.Controllers
         {
             return Json(_context.FApparatus.ToList().Where(i => i.Fragment == fragmentID));
         }
+
+        [HttpPost]
+        [Route("Create")]
+        public IActionResult Create([FromBody] FApparatus apparatus)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.FApparatus.Add(apparatus);
+                    _context.SaveChanges();
+                    return Ok(apparatus);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // log
+            }
+
+            return Conflict(apparatus);
+        }
+
     }
 }

@@ -24,7 +24,7 @@ namespace OSCCWebApp.Controllers
         }
 
         [HttpGet]
-        [Route("Hello")]
+        [Route("Hello")] //FIXME:
         public IActionResult GetReferencerID2([FromQuery] string fragmentID, [FromQuery] int editorID, [FromQuery] int bookID)
         {
             return Json(_context.Fragments.ToList().Where(i => i.FragmentName == fragmentID).Where(i => i.Editor == editorID).Where(i => i.Book == bookID).Select(x => x.Id));
@@ -76,6 +76,30 @@ namespace OSCCWebApp.Controllers
             return NotFound(fragment);
         }
 
-        
+        [HttpPost]
+        [Route("SetPublishFlag")] //TODO: Does not work.
+        public IActionResult SetPublishByAttr([FromBody] Fragments fragment)
+        {
+            Fragments _fragment = _context.Fragments.ToList().Where(i => i.Editor == fragment.Editor)
+                                                             .Where(i => i.Book == fragment.Book)
+                                                             .Where(i => i.FragmentName == fragment.FragmentName)
+                                                             .FirstOrDefault();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _fragment.Published = fragment.Published;
+                    _context.SaveChanges();
+                    return Ok(_fragment);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // log
+            }
+            return NotFound(fragment);
+        }
+
     }
 }

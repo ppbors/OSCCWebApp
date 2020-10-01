@@ -23,5 +23,29 @@ namespace OSCCWebApp.Controllers
         {
             return Json(_context.FDifferences.ToList().Where(i => i.Fragment == fragmentID));
         }
+
+        [HttpPost]
+        [Route("Create")]
+        public IActionResult Create([FromBody] FDifferences differences)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.FDifferences.Add(differences);
+                    _context.SaveChanges();
+                    return Ok(differences);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // log
+            }
+
+            return Conflict(differences);
+        }
+
+
     }
 }

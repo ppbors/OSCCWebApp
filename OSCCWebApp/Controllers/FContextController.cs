@@ -24,6 +24,7 @@ namespace OSCCWebApp.Controllers
         }
 
         [HttpPost]
+        [Route("Create")]
         public IActionResult Create([FromBody] FContext context)
         {
             try
@@ -43,5 +44,8 @@ namespace OSCCWebApp.Controllers
 
             return Conflict(context);
         }
+
+
+        
     }
 }
