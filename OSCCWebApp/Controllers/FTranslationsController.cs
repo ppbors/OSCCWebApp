@@ -30,15 +30,27 @@ namespace OSCCWebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.FTranslations.Add(translation);
-                    _context.SaveChanges();
-                    return Ok(translation);
+                    // Check if fragment already has a differences field.
+                    FTranslations _translation = _context.FTranslations.ToList().Where(i => i.Fragment == translation.Fragment)
+                                                             .FirstOrDefault();
+                    // If not, add a new differences row to the database
+                    if(_translation == null){
+                        _context.FTranslations.Add(translation);
+                        _context.SaveChanges();
+                        return Ok(translation);                        
+                    }
+                    // Else, change the differences field for this fragment.
+                    else{
+                        _translation.Translation = translation.Translation;
+                        _context.SaveChanges();
+                        return Ok(translation);
+                    }
                 }
 
             }
             catch (Exception ex)
             {
-                // log
+                return Ok(ex);// log
             }
 
             return Conflict(translation);

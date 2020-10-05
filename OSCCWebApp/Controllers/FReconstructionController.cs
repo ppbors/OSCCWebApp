@@ -31,9 +31,21 @@ namespace OSCCWebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.FReconstruction.Add(reconstruction);
-                    _context.SaveChanges();
-                    return Ok(reconstruction);
+                    // Check if fragment already has a differences field.
+                    FReconstruction _reconstruction = _context.FReconstruction.ToList().Where(i => i.Fragment == reconstruction.Fragment)
+                                                             .FirstOrDefault();
+                    // If not, add a new differences row to the database
+                    if(_reconstruction == null){
+                        _context.FReconstruction.Add(reconstruction);
+                        _context.SaveChanges();
+                        return Ok(reconstruction);                        
+                    }
+                    // Else, change the differences field for this fragment.
+                    else{
+                        _reconstruction.Reconstruction = reconstruction.Reconstruction;
+                        _context.SaveChanges();
+                        return Ok(reconstruction);
+                    }
                 }
 
             }

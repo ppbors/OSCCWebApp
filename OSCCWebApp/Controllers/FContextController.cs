@@ -25,15 +25,30 @@ namespace OSCCWebApp.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public IActionResult Create([FromBody] FContext context)
+        public IActionResult Create([FromBody] FContext myContext)
         {
+
+            // Check if fragment already has a differences field.
+            FContext _myContext = _context.FContext.ToList().Where(i => i.Fragment == myContext.Fragment)
+                                                        .FirstOrDefault();
+
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.FContext.Add(context);
-                    _context.SaveChanges();
-                    return Ok(context);
+
+
+                    if(_myContext == null){
+                        _context.FContext.Add(myContext);
+                        _context.SaveChanges();
+                        return Ok(myContext);
+                    }
+                    else{
+                        _myContext.ContextAuthor = myContext.ContextAuthor;
+                        _myContext.Context = myContext.Context;
+                        _context.SaveChanges();
+                        return Ok(myContext);
+                    }
                 }
 
             }
@@ -42,7 +57,7 @@ namespace OSCCWebApp.Controllers
                 // log
             }
 
-            return Conflict(context);
+            return Conflict(myContext);
         }
 
 

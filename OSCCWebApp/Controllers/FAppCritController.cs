@@ -27,16 +27,29 @@ namespace OSCCWebApp.Controllers
         [Route("Create")]
         public IActionResult Create([FromBody] FApparatus apparatus)
         {
+            
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.FApparatus.Add(apparatus);
-                    _context.SaveChanges();
-                    return Ok(apparatus);
+                    // Check if fragment already has a differences field.
+                    FApparatus _apparatus = _context.FApparatus.ToList().Where(i => i.Fragment == apparatus.Fragment)
+                                                             .FirstOrDefault();
+                    // If not, add a new differences row to the database
+                    if(_apparatus == null){
+                        _context.FApparatus.Add(apparatus);
+                        _context.SaveChanges();
+                        return Ok(apparatus);                        
+                    }
+                    // Else, change the differences field for this fragment.
+                    else{
+                        _apparatus.Apparatus = apparatus.Apparatus;
+                        _context.SaveChanges();
+                        return Ok(apparatus);
+                    }
                 }
 
-            }
+            }            
             catch (Exception ex)
             {
                 // log

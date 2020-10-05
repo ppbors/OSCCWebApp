@@ -31,12 +31,24 @@ namespace OSCCWebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.FCommentary.Add(commentary);
-                    _context.SaveChanges();
-                    return Ok(commentary);
+                    // Check if fragment already has a differences field.
+                    FCommentary _commentary = _context.FCommentary.ToList().Where(i => i.Fragment == commentary.Fragment)
+                                                             .FirstOrDefault();
+                    // If not, add a new differences row to the database
+                    if(_commentary == null){
+                        _context.FCommentary.Add(commentary);
+                        _context.SaveChanges();
+                        return Ok(commentary);                        
+                    }
+                    // Else, change the differences field for this fragment.
+                    else{
+                        _commentary.Commentary = commentary.Commentary;
+                        _context.SaveChanges();
+                        return Ok(commentary);
+                    }
                 }
 
-            }
+            }  
             catch (Exception ex)
             {
                 // log

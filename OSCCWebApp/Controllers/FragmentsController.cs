@@ -33,13 +33,31 @@ namespace OSCCWebApp.Controllers
         [HttpPost] //FIXME: This must be an update statement: if it is there, update it accordingly.
         public IActionResult Create([FromBody] Fragments fragment)
         {
+            // Check if fragment already has a differences field.
+            Fragments _fragment = _context.Fragments.ToList().Where(i => i.FragmentName == fragment.FragmentName)
+                                                             .Where(i => i.LineName == fragment.LineName)
+                                                             .Where(i => i.Book == fragment.Book)
+                                                             .Where(i => i.Editor == fragment.Editor)
+                                                             .FirstOrDefault();            
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Fragments.Add(fragment);
-                    _context.SaveChanges();
-                    return Ok(fragment);
+                    // If not, add a new fragment row to the database
+                    if(_fragment == null){
+                        _context.Fragments.Add(fragment);
+                        _context.SaveChanges();
+                        return Ok(fragment);
+                    }
+                    // Else, change the linecontent field for this fragment.
+                    else{
+                        _fragment.LineContent = fragment.LineContent;
+                        _context.SaveChanges();
+                        return Ok(fragment);
+                    }
+
+
+
                 }
 
             }

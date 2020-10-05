@@ -32,9 +32,21 @@ namespace OSCCWebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.FDifferences.Add(differences);
-                    _context.SaveChanges();
-                    return Ok(differences);
+                    // Check if fragment already has a differences field.
+                    FDifferences _differences = _context.FDifferences.ToList().Where(i => i.Fragment == differences.Fragment)
+                                                             .FirstOrDefault();
+                    // If not, add a new differences row to the database
+                    if(_differences == null){
+                        _context.FDifferences.Add(differences);
+                        _context.SaveChanges();
+                        return Ok(differences);                        
+                    }
+                    // Else, change the differences field for this fragment.
+                    else{
+                        _differences.Differences = differences.Differences;
+                        _context.SaveChanges();
+                        return Ok(differences);
+                    }
                 }
 
             }
