@@ -17,7 +17,6 @@ namespace OSCCWebApp
 {
     public class Startup
     {
-
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration)
@@ -35,7 +34,9 @@ namespace OSCCWebApp
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:4200")
+                                      builder.WithOrigins("http://localhost:4200",
+                                                          "http://localhost:5000",
+                                                          "http://nolden.biz:5000", "http://nolden.biz")
                                       .AllowAnyMethod()
                                       .AllowAnyHeader()
                                       .AllowCredentials();

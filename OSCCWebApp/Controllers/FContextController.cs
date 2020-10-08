@@ -29,20 +29,22 @@ namespace OSCCWebApp.Controllers
         {
 
             // Check if fragment already has a differences field.
-            FContext _myContext = _context.FContext.ToList().Where(i => i.Fragment == myContext.Fragment)
+            FContext _myContext = _context.FContext.ToList().Where(i => i.Id == myContext.Id)
+                                                            .Where(i => i.Fragment == myContext.Fragment)
+                                                            // .Where(i => i.ContextAuthor == myContext.ContextAuthor)
+                                                            
                                                         .FirstOrDefault();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-
-
                     if(_myContext == null){
                         _context.FContext.Add(myContext);
                         _context.SaveChanges();
                         return Ok(myContext);
                     }
+                    // If contextAuthor exists for this fragment, revise it.
                     else{
                         _myContext.ContextAuthor = myContext.ContextAuthor;
                         _myContext.Context = myContext.Context;
