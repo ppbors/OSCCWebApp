@@ -10,9 +10,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class FTranslationsController : Controller
     {
-        private readonly OSCC_DEVContext _context;
+        private readonly OSCC_NEWContext _context;
 
-        public FTranslationsController(OSCC_DEVContext context)
+        public FTranslationsController(OSCC_NEWContext context)
         {
             _context = context;
         }

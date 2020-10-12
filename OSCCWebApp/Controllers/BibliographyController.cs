@@ -10,9 +10,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class BibliographyController : Controller
     {
-        private readonly OSCC_DEVContext _context;
+        private readonly OSCC_NEWContext _context;
 
-        public BibliographyController(OSCC_DEVContext context)
+        public BibliographyController(OSCC_NEWContext context)
         {
             _context = context;
         }

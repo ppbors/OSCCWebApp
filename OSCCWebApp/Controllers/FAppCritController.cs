@@ -10,9 +10,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class FApparatusController : Controller
     {
-        private readonly OSCC_DEVContext _context;
+        private readonly OSCC_NEWContext _context;
 
-        public FApparatusController(OSCC_DEVContext context)
+        public FApparatusController(OSCC_NEWContext context)
         {
             _context = context;
         }

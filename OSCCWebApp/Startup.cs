@@ -42,7 +42,7 @@ namespace OSCCWebApp
                                       .AllowCredentials();
                                   });
             });
-            services.AddDbContext<OSCC_DEVContext>();
+            services.AddDbContext<OSCC_NEWContext>();
             services.AddMvc();
             services.AddControllers();
         }

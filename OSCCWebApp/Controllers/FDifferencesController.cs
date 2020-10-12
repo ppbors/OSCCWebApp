@@ -11,9 +11,9 @@ namespace OSCCWebApp.Controllers
     public class FDifferencesController : Controller
     {
 
-        private readonly OSCC_DEVContext _context;
+        private readonly OSCC_NEWContext _context;
 
-        public FDifferencesController(OSCC_DEVContext context)
+        public FDifferencesController(OSCC_NEWContext context)
         {
             _context = context;
         }

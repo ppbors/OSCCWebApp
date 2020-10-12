@@ -10,9 +10,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class EditorsController : Controller
     {
-        private readonly OSCC_DEVContext _context;
+        private readonly OSCC_NEWContext _context;
 
-        public EditorsController(OSCC_DEVContext context)
+        public EditorsController(OSCC_NEWContext context)
         {
             _context = context;
         }

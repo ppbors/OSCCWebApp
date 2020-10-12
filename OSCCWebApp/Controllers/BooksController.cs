@@ -11,9 +11,9 @@ namespace OSCCWebApp.Controllers
     public class BooksController : Controller
     {
 
-        private readonly OSCC_DEVContext _context;
+        private readonly OSCC_NEWContext _context;
 
-        public BooksController(OSCC_DEVContext context)
+        public BooksController(OSCC_NEWContext context)
         {
             _context = context;
         }
