@@ -10,9 +10,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class FReconstructionController : Controller
     {
-        private readonly OSCC_NEWContext _context;
+        private readonly OSCC_DBContext _context;
 
-        public FReconstructionController(OSCC_NEWContext context)
+        public FReconstructionController(OSCC_DBContext context)
         {
             _context = context;
         }

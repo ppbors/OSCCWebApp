@@ -10,9 +10,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class FContextController : Controller
     {
-        private readonly OSCC_NEWContext _context;
+        private readonly OSCC_DBContext _context;
 
-        public FContextController(OSCC_NEWContext context)
+        public FContextController(OSCC_DBContext context)
         {
             _context = context;
         }

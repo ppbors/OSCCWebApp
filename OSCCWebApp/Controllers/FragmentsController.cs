@@ -10,9 +10,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class FragmentsController : Controller
     {
-        private readonly OSCC_NEWContext _context;
+        private readonly OSCC_DBContext _context;
 
-        public FragmentsController(OSCC_NEWContext context)
+        public FragmentsController(OSCC_DBContext context)
         {
             _context = context;
         }

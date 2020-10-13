@@ -13,9 +13,9 @@ namespace OSCCWebApp.Controllers
     [Route("[controller]")]
     public class AuthorsController : Controller
     {
-        private readonly OSCC_NEWContext _context;
+        private readonly OSCC_DBContext _context;
 
-        public AuthorsController(OSCC_NEWContext context)
+        public AuthorsController(OSCC_DBContext context)
         {
             _context = context;
         }
