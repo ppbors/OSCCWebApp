@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace OSCCWebApp
 {
-    public partial class OSCC_NEWContext : DbContext
+    public partial class OSCC_DBContext : DbContext
     {
-        public OSCC_NEWContext()
+        public OSCC_DBContext()
         {
         }
 
-        public OSCC_NEWContext(DbContextOptions<OSCC_NEWContext> options)
+        public OSCC_DBContext(DbContextOptions<OSCC_DBContext> options)
             : base(options)
         {
         }

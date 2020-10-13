@@ -17,9 +17,9 @@ namespace OSCCWebApp.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly OSCC_NEWContext _context;
+        private readonly OSCC_DBContext _context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, OSCC_NEWContext context)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, OSCC_DBContext context)
         {
             _logger = logger;
             _context = context;
