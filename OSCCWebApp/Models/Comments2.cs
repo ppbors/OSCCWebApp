@@ -11,6 +11,6 @@ namespace OSCCWebApp
         public int? LineEnd { get; set; }
         public string LineCommentaar { get; set; }
 
-        public virtual Text TextNavigation { get; set; }
+        public virtual TText TextNavigation { get; set; }
     }
 }

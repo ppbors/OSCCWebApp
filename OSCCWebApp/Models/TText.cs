@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace OSCCWebApp
 {
-    public partial class Text
+    public partial class TText
     {
-        public Text()
+        public TText()
         {
             Comments = new HashSet<Comments>();
         }
