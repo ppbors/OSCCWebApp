@@ -10,8 +10,8 @@ namespace OSCCWebApp
             Bibliography = new HashSet<Bibliography>();
             Editors = new HashSet<Editors>();
             Fragments = new HashSet<Fragments>();
-            TText = new HashSet<TText>();
-            Comments = new HashSet<Comments>();
+            // TText = new HashSet<TText>();
+            // Comments = new HashSet<Comments>();
         }
 
         public int Id { get; set; }
@@ -22,8 +22,8 @@ namespace OSCCWebApp
         public virtual ICollection<Bibliography> Bibliography { get; set; }
         public virtual ICollection<Editors> Editors { get; set; }
         public virtual ICollection<Fragments> Fragments { get; set; }
-        public virtual ICollection<TText> TText { get; set; }
-        public virtual ICollection<Comments> Comments { get; set; }
+        // public virtual ICollection<TText> TText { get; set; }
+        // public virtual ICollection<Comments> Comments { get; set; }
 
     }
 }

@@ -18,8 +18,8 @@ namespace OSCCWebApp
         public virtual DbSet<Authors> Authors { get; set; }
         public virtual DbSet<Bibliography> Bibliography { get; set; }
         public virtual DbSet<Books> Books { get; set; }
-        public virtual DbSet<Comments> Comments { get; set; } // renamed to T_Commentary
-        public virtual DbSet<Comments2> Comments2 { get; set; } // deleted
+        // public virtual DbSet<Comments> Comments { get; set; } // renamed to T_Commentary
+        // public virtual DbSet<Comments2> Comments2 { get; set; } // deleted
         public virtual DbSet<Editors> Editors { get; set; }
         public virtual DbSet<FApparatus> FApparatus { get; set; }
         public virtual DbSet<FCommentary> FCommentary { get; set; }
@@ -29,7 +29,7 @@ namespace OSCCWebApp
         public virtual DbSet<FTranslations> FTranslations { get; set; }
         public virtual DbSet<FragmentReferencer> FragmentReferencer { get; set; }
         public virtual DbSet<Fragments> Fragments { get; set; }
-        public virtual DbSet<TText> TText { get; set; }
+        // public virtual DbSet<TText> TText { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -122,76 +122,7 @@ namespace OSCCWebApp
                     .HasConstraintName("Books_Authors_FK");
             });
 
-            modelBuilder.Entity<Comments>(entity =>
-            {
-                entity.ToTable("T_Commentary");
-
-
-                entity.HasIndex(e => e.Book)
-                    .HasName("Comments_TText_FK");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Commentary)
-                    .IsRequired()
-                    .HasColumnName("Commentary");
-
-                entity.Property(e => e.LineEnd)
-                    .HasColumnName("LineEnd")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.LineStart)
-                    .HasColumnName("LineStart")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.RelevantWords)
-                    .IsRequired()
-                    .HasColumnName("RelevantWords");
-
-                entity.Property(e => e.Pages).IsRequired();
-
-                entity.Property(e => e.Source).IsRequired();
-
-                entity.Property(e => e.Book).HasColumnType("int(11)");
-
-                entity.HasOne(d => d.TextNavigation)
-                    .WithMany(p => p.Comments)
-                    .HasForeignKey(d => d.Book)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Comments_TText_FK");
-            });
-
-            modelBuilder.Entity<Comments2>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.HasIndex(e => e.Text)
-                    .HasName("Comments2_Text_FK");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.LineCommentaar).HasColumnName("lineCommentaar");
-
-                entity.Property(e => e.LineEnd)
-                    .HasColumnName("lineEnd")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.LineStart)
-                    .HasColumnName("lineStart")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Text).HasColumnType("int(11)");
-
-                entity.HasOne(d => d.TextNavigation)
-                    .WithMany()
-                    .HasForeignKey(d => d.Text)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Comments2_Text_FK");
-            });
+            
 
             modelBuilder.Entity<Editors>(entity =>
             {
@@ -414,35 +345,7 @@ namespace OSCCWebApp
                     .HasConstraintName("Fragments_Books_FK");
             });
 
-            modelBuilder.Entity<TText>(entity =>
-            {
-                entity.ToTable("T_Text");
-
-                entity.HasIndex(e => e.Book)
-                    .HasName("Text_Books_FK");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Book).HasColumnType("int(11)");
-
-                entity.Property(e => e.LineContent)
-                    .HasColumnName("lineContent")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LineNumber)
-                    .HasColumnName("lineNumber")
-                    .HasColumnType("int(11)");
-
-                entity.HasOne(d => d.BookNavigation)
-                    .WithMany(p => p.TText)
-                    .HasForeignKey(d => d.Book)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Text_Books_FK");
-            });
-
+            
             OnModelCreatingPartial(modelBuilder);
         }
 
