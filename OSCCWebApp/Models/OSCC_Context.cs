@@ -18,8 +18,6 @@ namespace OSCCWebApp
         public virtual DbSet<Authors> Authors { get; set; }
         public virtual DbSet<Bibliography> Bibliography { get; set; }
         public virtual DbSet<Books> Books { get; set; }
-        // public virtual DbSet<Comments> Comments { get; set; } // renamed to T_Commentary
-        // public virtual DbSet<Comments2> Comments2 { get; set; } // deleted
         public virtual DbSet<Editors> Editors { get; set; }
         public virtual DbSet<FApparatus> FApparatus { get; set; }
         public virtual DbSet<FCommentary> FCommentary { get; set; }
@@ -27,9 +25,9 @@ namespace OSCCWebApp
         public virtual DbSet<FDifferences> FDifferences { get; set; }
         public virtual DbSet<FReconstruction> FReconstruction { get; set; }
         public virtual DbSet<FTranslations> FTranslations { get; set; }
-        public virtual DbSet<FragmentReferencer> FragmentReferencer { get; set; }
         public virtual DbSet<Fragments> Fragments { get; set; }
-        // public virtual DbSet<TText> TText { get; set; }
+        public virtual DbSet<TCommentary> TCommentary { get; set; }
+        public virtual DbSet<TLines> TLines { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,6 +42,10 @@ namespace OSCCWebApp
         {
             modelBuilder.Entity<Authors>(entity =>
             {
+                entity.HasIndex(e => e.Name)
+                    .HasName("Authors_UN")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
                     .HasColumnType("int(11)");
@@ -122,8 +124,6 @@ namespace OSCCWebApp
                     .HasConstraintName("Books_Authors_FK");
             });
 
-            
-
             modelBuilder.Entity<Editors>(entity =>
             {
                 entity.HasIndex(e => new { e.Book, e.Name })
@@ -136,13 +136,10 @@ namespace OSCCWebApp
 
                 entity.Property(e => e.Book).HasColumnType("int(11)");
 
-                entity.Property(e => e.MainEditor)
-                    .HasColumnName("MainEditor")
-                    .HasColumnType("int(11)");
+                entity.Property(e => e.MainEditor).HasColumnType("tinyint(1)");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("Name")
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
@@ -157,7 +154,7 @@ namespace OSCCWebApp
                 entity.ToTable("F_Apparatus");
 
                 entity.HasIndex(e => e.Fragment)
-                    .HasName("F_Apparatus_UN")
+                    .HasName("F_AppCrit_UN")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -170,7 +167,7 @@ namespace OSCCWebApp
                     .WithOne(p => p.FApparatus)
                     .HasForeignKey<FApparatus>(d => d.Fragment)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("F_Apparatus_FragmentReferencer_FK");
+                    .HasConstraintName("F_Apparatus_Fragments_FK");
             });
 
             modelBuilder.Entity<FCommentary>(entity =>
@@ -191,7 +188,7 @@ namespace OSCCWebApp
                     .WithOne(p => p.FCommentary)
                     .HasForeignKey<FCommentary>(d => d.Fragment)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("F_Commentary_FragmentReferencer_FK");
+                    .HasConstraintName("F_Commentary_Fragments_FK");
             });
 
             modelBuilder.Entity<FContext>(entity =>
@@ -201,11 +198,17 @@ namespace OSCCWebApp
                 entity.HasIndex(e => e.Fragment)
                     .HasName("F_Context_FragmentReferencer_FK");
 
+                entity.HasIndex(e => new { e.Fragment, e.ContextAuthor })
+                    .HasName("F_Context_UN")
+                    .IsUnique();
+
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.ContextAuthor).HasColumnType("tinytext");
+                entity.Property(e => e.ContextAuthor)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fragment).HasColumnType("int(11)");
 
@@ -213,7 +216,7 @@ namespace OSCCWebApp
                     .WithMany(p => p.FContext)
                     .HasForeignKey(d => d.Fragment)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("F_Context_FragmentReferencer_FK");
+                    .HasConstraintName("F_Context_Fragments_FK");
             });
 
             modelBuilder.Entity<FDifferences>(entity =>
@@ -234,7 +237,7 @@ namespace OSCCWebApp
                     .WithOne(p => p.FDifferences)
                     .HasForeignKey<FDifferences>(d => d.Fragment)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("F_Differences_FragmentReferencer_FK");
+                    .HasConstraintName("F_Differences_Fragments_FK");
             });
 
             modelBuilder.Entity<FReconstruction>(entity =>
@@ -242,7 +245,8 @@ namespace OSCCWebApp
                 entity.ToTable("F_Reconstruction");
 
                 entity.HasIndex(e => e.Fragment)
-                    .HasName("F_Reconstruction_FragmentReferencer_FK");
+                    .HasName("F_Reconstruction_UN")
+                    .IsUnique();
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
@@ -251,10 +255,10 @@ namespace OSCCWebApp
                 entity.Property(e => e.Fragment).HasColumnType("int(11)");
 
                 entity.HasOne(d => d.FragmentNavigation)
-                    .WithMany(p => p.FReconstruction)
-                    .HasForeignKey(d => d.Fragment)
+                    .WithOne(p => p.FReconstruction)
+                    .HasForeignKey<FReconstruction>(d => d.Fragment)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("F_Reconstruction_FragmentReferencer_FK");
+                    .HasConstraintName("F_Reconstruction_Fragments_FK");
             });
 
             modelBuilder.Entity<FTranslations>(entity =>
@@ -277,32 +281,14 @@ namespace OSCCWebApp
                     .WithOne(p => p.FTranslations)
                     .HasForeignKey<FTranslations>(d => d.Fragment)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("F_Translations_FragmentReferencer_FK");
-            });
-
-            modelBuilder.Entity<FragmentReferencer>(entity =>
-            {
-                entity.HasIndex(e => new { e.Book, e.Editor, e.FragmentNo })
-                    .HasName("FragmentReferencer_UN")
-                    .IsUnique();
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Book).HasColumnType("int(11)");
-
-                entity.Property(e => e.Editor).HasColumnType("int(11)");
-
-                entity.Property(e => e.FragmentNo).HasColumnType("int(11)");
-
-                entity.Property(e => e.Published)
-                    .HasColumnName("Published")
-                    .HasColumnType("int(11)");
+                    .HasConstraintName("F_Translations_Fragments_FK");
             });
 
             modelBuilder.Entity<Fragments>(entity =>
             {
+                entity.HasIndex(e => e.Editor)
+                    .HasName("Fragments_Editors_FK");
+
                 entity.HasIndex(e => new { e.Book, e.FragmentName, e.LineName, e.Editor })
                     .HasName("Fragments_UN")
                     .IsUnique();
@@ -315,37 +301,86 @@ namespace OSCCWebApp
 
                 entity.Property(e => e.Editor).HasColumnType("int(11)");
 
-                entity.Property(e => e.LineContent)
-                    .IsRequired()
-                    .HasColumnName("LineContent");
-
                 entity.Property(e => e.FragmentName)
                     .IsRequired()
-                    .HasColumnName("FragmentName")
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.Property(e => e.LineContent).IsRequired();
 
                 entity.Property(e => e.LineName)
                     .IsRequired()
-                    .HasColumnName("LineName")
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Published)
-                    .HasColumnName("Published")
-                    .HasColumnType("int(11)");
+                entity.Property(e => e.Published).HasColumnType("int(11)");
 
-                entity.Property(e => e.Status)
-                    .HasColumnName("Status")
-                    .HasColumnType("tinytext");
+                entity.Property(e => e.Status).HasColumnType("tinytext");
 
                 entity.HasOne(d => d.BookNavigation)
                     .WithMany(p => p.Fragments)
                     .HasForeignKey(d => d.Book)
                     .HasConstraintName("Fragments_Books_FK");
+
+                entity.HasOne(d => d.EditorNavigation)
+                    .WithMany(p => p.Fragments)
+                    .HasForeignKey(d => d.Editor)
+                    .HasConstraintName("Fragments_Editors_FK");
             });
 
-            
+            modelBuilder.Entity<TCommentary>(entity =>
+            {
+                entity.ToTable("T_Commentary");
+
+                entity.HasIndex(e => e.Book)
+                    .HasName("Comments_Text_FK");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Book).HasColumnType("int(11)");
+
+                entity.Property(e => e.Commentary).IsRequired();
+
+                entity.Property(e => e.LineEnd).HasColumnType("int(11)");
+
+                entity.Property(e => e.LineStart).HasColumnType("int(11)");
+
+                entity.Property(e => e.Pages).IsRequired();
+
+                entity.Property(e => e.RelevantWords).IsRequired();
+
+                entity.Property(e => e.Source).IsRequired();
+
+                entity.HasOne(d => d.BookNavigation)
+                    .WithMany(p => p.TCommentary)
+                    .HasForeignKey(d => d.Book)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("T_Commentary_Books_FK");
+            });
+
+            modelBuilder.Entity<TLines>(entity =>
+            {
+                entity.ToTable("T_Lines");
+
+                entity.HasIndex(e => e.Book)
+                    .HasName("Text_Books_FK");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Book).HasColumnType("int(11)");
+
+                entity.Property(e => e.LineNumber).HasColumnType("int(11)");
+
+                entity.HasOne(d => d.BookNavigation)
+                    .WithMany(p => p.TLines)
+                    .HasForeignKey(d => d.Book)
+                    .HasConstraintName("T_Lines_Books_FK");
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
 

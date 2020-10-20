@@ -10,6 +10,6 @@ namespace OSCCWebApp
         public string ContextAuthor { get; set; }
         public string Context { get; set; }
 
-        public virtual FragmentReferencer FragmentNavigation { get; set; }
+        public virtual Fragments FragmentNavigation { get; set; }
     }
 }

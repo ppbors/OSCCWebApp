@@ -9,6 +9,6 @@ namespace OSCCWebApp
         public int? Fragment { get; set; }
         public string Differences { get; set; }
 
-        public virtual FragmentReferencer FragmentNavigation { get; set; }
+        public virtual Fragments FragmentNavigation { get; set; }
     }
 }

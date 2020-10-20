@@ -9,6 +9,6 @@ namespace OSCCWebApp
         public int? Fragment { get; set; }
         public string Apparatus { get; set; }
 
-        public virtual FragmentReferencer FragmentNavigation { get; set; }
+        public virtual Fragments FragmentNavigation { get; set; }
     }
 }
