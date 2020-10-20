@@ -17,9 +17,14 @@ namespace OSCCWebApp.Controllers
             _context = context;
         }
 
-        public IActionResult GetByTextID([FromQuery] int textID)
+        public IActionResult GetByTextID([FromQuery] int textID, int lineNumber)
         {
-            return Json(_context.TCommentary.ToList().Where(i => i.Book == textID));
+            return Json(_context.TCommentary.ToList().Where(i => i.Book == textID)
+                                                        .Where(i => i.LineStart <= lineNumber)
+                                                        .Where(i => i.LineEnd >= lineNumber)
+                                                        );
+            // return Json(_context.Fragments.ToList().Where(i => i.FragmentName == fragmentID).Where(i => i.Editor == editorID).Where(i => i.Book == bookID).Select(x => x.Id));
+
         }
 
         // [HttpPost]

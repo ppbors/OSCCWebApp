@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
  * dotnet ef dbcontext scaffold "server=katwijk.nolden.biz;port=3306;user=Ycreak;password=YcreakPasswd26!;database=OSCC_DB" MySql.Data.EntityFrameworkCore
  * 
  * (string used to scaffold db)
- * 
+ * DON'T USE THE "-o Models" parameter: this will create an OSCCWebApp.Models namespace which is unkown.
  */
 namespace OSCCWebApp
 {

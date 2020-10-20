@@ -36,7 +36,7 @@ namespace OSCCWebApp
                                   {
                                       builder.WithOrigins("http://localhost:4200",
                                                           "http://localhost:5000",
-                                                          "http://nolden.biz:5000", "http://nolden.biz")
+                                                          "http://nolden.biz:5000", "http://katwijk.nolden.biz:5000")
                                       .AllowAnyMethod()
                                       .AllowAnyHeader()
                                       .AllowCredentials();
