@@ -34,10 +34,10 @@ namespace OSCCWebApp
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:4200",
+                                      builder.WithOrigins("https://localhost:4200","http://localhost:4200",
                                                           "http://localhost:5000",
                                                           "http://nolden.biz", "http://katwijk.nolden.biz",
-                                                          "http://oscc.nolden.biz")
+                                                          "http://oscc.nolden.biz", "https://oscc.lucdh.nl")
                                       .AllowAnyMethod()
                                       .AllowAnyHeader()
                                       .AllowCredentials();

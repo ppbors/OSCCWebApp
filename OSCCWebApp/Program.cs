@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 /*
  * dotnet ef dbcontext scaffold "server=katwijk.nolden.biz;port=3306;user=Ycreak;password=YcreakPasswd26!;database=OSCC_DB" MySql.Data.EntityFrameworkCore
@@ -26,8 +27,22 @@ namespace OSCCWebApp
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    
+                    webBuilder.ConfigureKestrel(serverOptions => {
+                        serverOptions.Listen(IPAddress.Any, 5000);
+                        serverOptions.Listen(IPAddress.Any, 5001, 
+                            listenOptions =>
+                            {
+                                listenOptions.UseHttps("/etc/ssl/mycerts/certificate.pfx", 
+                                    "hoi");
+                            });
+                        });          
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://*:5000"); // Kestrel host port
+                    // webBuilder.UseUrls("https://*:5001"); // Kestrel host port
+
+
+
+
                 });
     }
 }
