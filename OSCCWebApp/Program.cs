@@ -30,12 +30,12 @@ namespace OSCCWebApp
                     
                     webBuilder.ConfigureKestrel(serverOptions => {
                         serverOptions.Listen(IPAddress.Any, 5000);
-                        serverOptions.Listen(IPAddress.Any, 5001, 
-                            listenOptions =>
-                            {
-                                listenOptions.UseHttps("/etc/ssl/mycerts/certificate.pfx", 
-                                    "hoi");
-                            });
+                        // serverOptions.Listen(IPAddress.Any, 5001, 
+                            // listenOptions =>
+                            // {
+                            //     listenOptions.UseHttps("/etc/ssl/mycerts/certificate.pfx", 
+                            //         "hoi");
+                            // });
                         });          
                     webBuilder.UseStartup<Startup>();
                     // webBuilder.UseUrls("https://*:5001"); // Kestrel host port

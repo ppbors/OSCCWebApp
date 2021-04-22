@@ -34,18 +34,29 @@ namespace OSCCWebApp
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("https://localhost:4200","http://localhost:4200",
-                                                          "http://localhost:5000",
-                                                          "http://nolden.biz", "http://katwijk.nolden.biz",
-                                                          "http://oscc.nolden.biz", "https://oscc.lucdh.nl")
-                                      .AllowAnyMethod()
-                                      .AllowAnyHeader()
-                                      .AllowCredentials();
+                                      builder.WithOrigins("http://localhost:4200","http://oscc.nolden.biz")
+                                      //AllowAnyOrigin();
+                                        .AllowAnyMethod()
+                                        .AllowAnyHeader()
+                                        .AllowCredentials();
+                                    //   WithOrigins(//"https://localhost:4200","http://localhost:4200",
+                                    //                       //"http://localhost:5000",
+                                    //                       //"http://nolden.biz", "http://katwijk.nolden.biz",
+                                    //                       //"http://oscc.nolden.biz", "https://oscc.lucdh.nl",
+                                    //                       "http://oscc.nolden.biz"
+                                    //                     )
                                   });
             });
             services.AddDbContext<OSCC_DBContext>();
             services.AddMvc();
             services.AddControllers();
+        
+            // services.AddHttpsRedirection(options => {
+            //     // options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+            //     options.HttpsPort = 5001;
+            // });
+        
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,13 +67,22 @@ namespace OSCCWebApp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            // app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials()
+                );
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            // app.UseMvc();
 
             app.UseEndpoints(endpoints =>
             {
